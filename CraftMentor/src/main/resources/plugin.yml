@@ -1,0 +1,5 @@
+name: CraftMentor
+version: '${project.version}'
+main: dev.feliperf.craftmentor.CraftMentor
+api-version: '1.20'
+load: STARTUP
