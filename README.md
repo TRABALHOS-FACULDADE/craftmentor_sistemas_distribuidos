@@ -11,6 +11,14 @@
 
 - Edson Mota da Cruz
 
+## Estrutura de pastas
+
+[CraftMentor/](https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos/tree/main/CraftMentor) | Aqui estão os arquivos do projeto em `Kotlin` referente ao Plugin desenvolvido com a biblioteca `Spigot 1.20.4` (Bukkit)
+
+[CraftMentorBukkit/](https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos/tree/main/CraftMentorBukkit) | Aqui estão os arquivos de configuração do servidor Bukkit
+
+[craftmentor_backend/](https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos/tree/main/craftmentor_backend) | Aqui estão os arquivos do backend feito em `Dart`
+
 ## Instalação e configuração
 
 ### Requisitos
