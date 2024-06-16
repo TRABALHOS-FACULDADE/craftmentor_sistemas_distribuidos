@@ -25,7 +25,7 @@
 1. Clone o repositório
 
 ```bash
-git clone https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos
+git clone https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos.git
 ```
 
 2. Crie os containers para o PostgreSQL e o Adminer
