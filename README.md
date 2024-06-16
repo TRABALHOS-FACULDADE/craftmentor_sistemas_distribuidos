@@ -28,3 +28,8 @@ O Adminer é uma interface que permite interagir com o banco de dados do Postgre
 ### Backend Dart
 
 Na porta 8001, estará rodando o backend em Dart na máquina local. Em [**seu código**](https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos/blob/main/craftmentor_backend/bin/craftmentor_backend.dart), será estabelecida a comunicação com o banco de dados do PostgreSQL (que estará rodando no container Docker).
+
+### Servidor Minecraft - Bukkit
+
+![](screenshots/server.png)
+![](screenshots/ip.png)
