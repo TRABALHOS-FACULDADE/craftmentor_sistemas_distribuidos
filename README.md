@@ -14,9 +14,9 @@
 ### Requisitos
 
 - Docker
-- Dart 3.4.0
+- [Dart 3.4.0](https://dart.dev)
 - Java | JRE 1.8.0
-- Minecraft 1.20.4
+- [Minecraft 1.20.4](https://www.minecraft.net/pt-br)
 
 ### Instalação
 
