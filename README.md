@@ -1,4 +1,6 @@
-![CraftMentor](screenshots/craftmentor.png)
+<div align='center'>
+    <img src='screenshots/craftmentor.png'>
+</div>
 
 ## Discentes
 
