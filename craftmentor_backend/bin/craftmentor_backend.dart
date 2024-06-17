@@ -1,29 +1,19 @@
-import 'package:postgres/postgres.dart';
+import 'postgresql/postgresql_db.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart';
-import '../bin/functions/players_requests.dart';
+import 'requests/players_requests.dart';
 
 Future<void> main(List<String> arguments) async {
-  final conn = await Connection.open(
-    Endpoint(
-      host: 'localhost',
-      database: 'dart',
-      username: 'root',
-      password: 'password',
-      port: 5435,
-    ),
-    settings: ConnectionSettings(
-      sslMode: SslMode.disable,
-    ),
-  );
+  // Oppening connection with PostgreSQL
+  final conn = await PostgreSQLDB.startConnection();
 
-  if (conn.isOpen) {
-    print('Connected to Postgres!\n');
-  }
-
+  // Starting Shelf-Router handler
   var app = Router();
-  playerRequests(app: app, sql: conn);
 
+  // [PlayerRequests] is a class which starts all Player requests methods
+  PlayerRequests(app: app, sql: conn);
+
+  // Starting Shelf-Router Dart Server at address: 0.0.0.0:8001
   var server = await shelf_io.serve(app.call, '0.0.0.0', 8001);
   print('Dart server running in ${server.address.host}:${server.port}');
   server.autoCompress = true;
