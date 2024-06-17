@@ -16,9 +16,23 @@ class PlayerRepository {
             return body
         }
 
+        fun insertNewPlayer(name: String, id: String) : PlayerModel? {
+            val callback = endpoint.insertNewPlayer(
+                hashMapOf("name" to name, "id" to id)
+            )
+            val body = callback.execute().body()
+            return body
+        }
+
         fun updatePlayerPoints(playerName: String, points: Double) {
             val callback = endpoint.updatePlayerPoints(playerName, hashMapOf("points" to points))
             callback.execute()
+        }
+
+        fun playerExists(playerName: String): PlayerModel? {
+            val callback = endpoint.playerExists(playerName)
+            val body = callback.execute().body()
+            return body
         }
     }
 }

@@ -60,6 +60,16 @@ docker build -t craftmentor_bukkit ./CraftMentorBukkit/
 docker run --name craftmentor_bukkit_server --add-host host.docker.internal:host-gateway -it -p 8000:8000 craftmentor_bukkit
 ```
 
+> Forma alternativa para as etapas **4** e **5**:
+
+```bash
+./CraftMentorBukkit/start.bat ### Ou, caso esteja usando S.O Linux:
+
+### Renomeie o arquivo para start.sh e execute:
+
+bash ./CraftMentorBukkit/start.sh
+```
+
 6. No Minecraft (versão 1.20.4), conecte-se ao servidor através do endereço
 
 ```
@@ -69,6 +79,10 @@ docker run --name craftmentor_bukkit_server --add-host host.docker.internal:host
 ## Rotas
 
 [**[GET]**](0.0.0.0:8001/players) `0.0.0.0:8001/players` | Lista os jogadores do servidor, permitindo visualizar a pontuação de cada.
+
+[**[GET]**](0.0.0.0:8001/player-exists/teste) `0.0.0.0:8001/player-exists/<player_name>` | Verifica se um jogador já está cadastrado no servidor.
+
+[**[POST]**](0.0.0.0:8001/players/) `0.0.0.0:8001/players` | Cadastra um novo jogador no servidor. | Recebe um _body_ `{"id": <uuid>, "name": <player_name>}`
 
 [**[PATCH]**](0.0.0.0:8001/player/teste) `0.0.0.0:8001/player/<name>` | Atualiza a pontuação de um jogador. | Recebe um _body_ `{"points": <valor_em_double>}`
 
@@ -96,3 +110,4 @@ Na porta 8001, estará rodando o backend em Dart na máquina local. Em [**seu c�
 
 ![](screenshots/server.png)
 ![](screenshots/ip.png)
+![](screenshots/game.png)

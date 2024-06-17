@@ -1,18 +1,31 @@
 package dev.feliperf.craftmentor
 
-import dev.feliperf.craftmentor.Domain.Models.PlayerModel
 import dev.feliperf.craftmentor.Presenter.Controllers.BlockRankingController
+import dev.feliperf.craftmentor.Presenter.Controllers.CraftMentorController
 import dev.feliperf.craftmentor.Presenter.Controllers.PlayerController
 import org.bukkit.Bukkit
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.Timer
 import java.util.TimerTask
 
-class CraftMentor : JavaPlugin() {
+@EventHandler
+fun onJoinServer(event: PlayerJoinEvent) {
+
+    val player = event.player
+
+    if(PlayerController.playerExists(player.name) == null) {
+        PlayerController.insertNewPlayer(player.name, player.uniqueId.toString())
+    }
+}
+
+class CraftMentor : JavaPlugin(), Listener {
     override fun onEnable() {
+        Bukkit.getServer().pluginManager.registerEvents(this, this)
         BlockRankingController.fillBlocks()
-        val players = PlayerController.getAllPlayers();
-        updatePlayersPointsTimer(players)
+        updatePlayersPointsTimer()
     }
 
     override fun onLoad() {
@@ -21,19 +34,27 @@ class CraftMentor : JavaPlugin() {
     }
 
     override fun onDisable() {
-        // Plugin shutdown logic
+        Bukkit.getServer().broadcastMessage("Shutting down server and plugins...")
     }
 }
 
-private fun updatePlayersPointsTimer(players: List<PlayerModel>) {
+private fun updatePlayersPointsTimer() {
     val timer = Timer()
+    val players = PlayerController.getAllPlayers()
     timer.schedule(object : TimerTask() {
         override fun run() {
             for (player in players) {
-                val points = BlockRankingController.calculatePlayerPoints(player)
-                PlayerController.updatePlayerPoints(player.name, points)
+                val bukkitPlayer = Bukkit.getPlayer(player.name)
+                if (bukkitPlayer != null) {
+                    if (bukkitPlayer.isOnline) {
+                        val points = BlockRankingController.calculatePlayerPoints(player, bukkitPlayer)
+                        PlayerController.updatePlayerPoints(player.name, points)
+                    }
+                }
             }
-            updatePlayersPointsTimer(players)
+            CraftMentorController.playersRankingBroadcastChatMessage(players)
+            timer.cancel()
+            updatePlayersPointsTimer()
         }
 
     }, 10000) // 10 seconds

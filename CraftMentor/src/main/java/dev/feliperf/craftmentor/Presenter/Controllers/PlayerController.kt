@@ -9,8 +9,16 @@ class PlayerController {
             return PlayerRepository.getAllPlayers() ?: emptyList()
         }
 
+        fun insertNewPlayer(name: String, id: String): PlayerModel? {
+            return PlayerRepository.insertNewPlayer(name, id)
+        }
+
         fun updatePlayerPoints(playerName: String, points: Double) {
             PlayerRepository.updatePlayerPoints(playerName, points)
+        }
+
+        fun playerExists(playerName: String) : PlayerModel? {
+            return PlayerRepository.playerExists(playerName)
         }
     }
 }

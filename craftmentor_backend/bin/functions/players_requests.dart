@@ -4,7 +4,6 @@ import 'package:craftmentor_backend/models/player.dart';
 import 'package:postgres/postgres.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
-import 'package:uuid/uuid.dart';
 
 void playerRequests({
   required Router app,
@@ -34,14 +33,37 @@ void playerRequests({
     }
   });
 
+  app.get('/player-exists/<name>', (Request request) async {
+    final query = request.params;
+    final name = query['name'];
+
+    try {
+      final result = await sql.execute(
+        Sql.named('''SELECT * FROM "PLAYER" WHERE name=@name;'''),
+        parameters: {'name': name},
+      );
+      final data = result
+          .map((row) => row.map((e) => e).toList())
+          .map(
+            (player) => Player.fromObject(
+              player,
+            ),
+          )
+          .toList();
+      return Response.ok(jsonEncode(data.firstOrNull?.toMap));
+    } catch (e) {
+      return Response.badRequest(body: jsonEncode(null));
+    }
+  });
+
   app.post('/players', (Request request) async {
     try {
-      final id = Uuid().v4();
-      final query = await request.readAsString();
-      final parameters = jsonDecode(query) as Map<String, dynamic>;
-      final name = parameters['name'];
+      final body = await request.readAsString();
+      final bodyParams = jsonDecode(body) as Map<String, dynamic>;
+      final id = bodyParams['id'];
+      final name = bodyParams['name'];
 
-      final insertionParameters = {
+      final insertionParams = {
         'id': id,
         'name': name,
         'points': 0,
@@ -53,10 +75,10 @@ void playerRequests({
 INSERT INTO "PLAYER" (id, name, points) VALUES(@id, @name, @points);
 ''',
         ),
-        parameters: insertionParameters,
+        parameters: insertionParams,
       );
 
-      return Response.ok(jsonEncode(insertionParameters));
+      return Response.ok(jsonEncode(insertionParams));
     } catch (e) {
       return Response.badRequest(
         body: jsonEncode(
@@ -71,12 +93,13 @@ INSERT INTO "PLAYER" (id, name, points) VALUES(@id, @name, @points);
 
   app.patch('/player/<name>', (Request request) async {
     try {
-      final query = await request.readAsString();
-      final parameters = jsonDecode(query) as Map<String, dynamic>;
-      final name = request.params['name'];
-      final points = parameters['points'];
+      final body = await request.readAsString();
+      final query = request.params;
+      final bodyParams = jsonDecode(body) as Map<String, dynamic>;
+      final name = query['name'];
+      final points = bodyParams['points'];
 
-      final updateParameters = {
+      final updateParams = {
         'name': name,
         'points': points,
       };
@@ -87,10 +110,10 @@ INSERT INTO "PLAYER" (id, name, points) VALUES(@id, @name, @points);
 UPDATE "PLAYER" SET points=@points WHERE name=@name;
 ''',
         ),
-        parameters: updateParameters,
+        parameters: updateParams,
       );
 
-      return Response.ok(jsonEncode(updateParameters));
+      return Response.ok(jsonEncode(updateParams));
     } catch (e) {
       return Response.badRequest(
         body: jsonEncode(

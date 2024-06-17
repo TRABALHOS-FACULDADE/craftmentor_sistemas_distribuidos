@@ -4,6 +4,7 @@ import dev.feliperf.craftmentor.Domain.Models.BlockRanking
 import dev.feliperf.craftmentor.Domain.Models.PlayerModel
 import org.bukkit.Bukkit
 import org.bukkit.Material.*
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class BlockRankingController {
@@ -45,20 +46,15 @@ class BlockRankingController {
             blocks.add(BlockRanking(id = blocks.size, type = REDSTONE_ORE, points = 8.5))
         }
 
-        fun calculatePlayerPoints(player: PlayerModel): Double {
+        fun calculatePlayerPoints(player: PlayerModel, bukkitPlayer: Player): Double {
             var points = 0.0
-            val bukkitPlayer =  Bukkit.getPlayer(player.name)
-            if (bukkitPlayer != null) {
-                if (bukkitPlayer.isOnline) {
-                    val inventory = bukkitPlayer.inventory.contents
-                    for (item: ItemStack? in inventory.asList()) {
-                        if (item != null) {
-                            val itemCount = item.amount
-                            val itemType = item.type
-                            val totalPoints = blocks.filter { it.type == itemType }.sumOf { it.points }
-                            points += (totalPoints * itemCount)
-                        }
-                    }
+            val inventory = bukkitPlayer.inventory.contents
+            for (item: ItemStack? in inventory.asList()) {
+                if (item != null) {
+                    val itemCount = item.amount
+                    val itemType = item.type
+                    val totalPoints = blocks.filter { it.type == itemType }.sumOf { it.points }
+                    points += (totalPoints * itemCount)
                 }
             }
             return points
