@@ -2,15 +2,6 @@
     <img src='screenshots/craftmentor.png'>
 </div>
 
-## Discentes
-
-- Felipe Azevedo Ribeiro
-- Guilherme Henriques Almeida
-
-## Docente
-
-- Edson Mota da Cruz
-
 ## Estrutura de pastas
 
 [CraftMentor/](https://github.com/TRABALHOS-FACULDADE/craftmentor_sistemas_distribuidos/tree/main/CraftMentor) | Aqui estão os arquivos do projeto em `Kotlin` referente ao Plugin desenvolvido com a biblioteca `Spigot 1.20.4` (Bukkit)
